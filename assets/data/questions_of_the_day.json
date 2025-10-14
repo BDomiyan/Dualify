@@ -1,0 +1,458 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2024-01-15",
+  "description": "Question of the Day database for Dualify apprenticeship tracking",
+  "questions": [
+    {
+      "id": "learning_001",
+      "question": "What new skill or technique did you learn today?",
+      "category": "learning",
+      "tags": ["skills", "development", "growth"],
+      "difficulty": 2,
+      "hint": "Think about both technical and soft skills you've developed"
+    },
+    {
+      "id": "learning_002",
+      "question": "What was the most interesting thing you discovered during your work?",
+      "category": "learning",
+      "tags": ["discovery", "curiosity", "knowledge"],
+      "difficulty": 2
+    },
+    {
+      "id": "learning_003",
+      "question": "How did you apply something you learned in school to your work today?",
+      "category": "learning",
+      "tags": ["theory", "practice", "application"],
+      "difficulty": 3,
+      "hint": "Consider how theoretical knowledge translates to real-world situations"
+    },
+    {
+      "id": "learning_004",
+      "question": "What would you like to learn more about based on today's experience?",
+      "category": "learning",
+      "tags": ["curiosity", "future", "goals"],
+      "difficulty": 2
+    },
+    {
+      "id": "learning_005",
+      "question": "What concept that seemed difficult before makes more sense now?",
+      "category": "learning",
+      "tags": ["understanding", "progress", "breakthrough"],
+      "difficulty": 3
+    },
+    {
+      "id": "learning_006",
+      "question": "How has your understanding of your trade evolved this week?",
+      "category": "learning",
+      "tags": ["evolution", "trade", "understanding"],
+      "difficulty": 3
+    },
+    {
+      "id": "learning_007",
+      "question": "What learning resource (book, video, mentor) helped you most recently?",
+      "category": "learning",
+      "tags": ["resources", "tools", "support"],
+      "difficulty": 2
+    },
+    {
+      "id": "learning_008",
+      "question": "What mistake taught you the most valuable lesson?",
+      "category": "learning",
+      "tags": ["mistakes", "lessons", "growth"],
+      "difficulty": 4,
+      "hint": "Remember that mistakes are learning opportunities"
+    },
+    {
+      "id": "problem-solving_001",
+      "question": "What challenge did you face today and how did you overcome it?",
+      "category": "problem-solving",
+      "tags": ["challenges", "solutions", "resilience"],
+      "difficulty": 3
+    },
+    {
+      "id": "problem-solving_002",
+      "question": "Describe a problem you solved using creative thinking.",
+      "category": "problem-solving",
+      "tags": ["creativity", "innovation", "thinking"],
+      "difficulty": 4
+    },
+    {
+      "id": "problem-solving_003",
+      "question": "What tools or techniques helped you troubleshoot an issue?",
+      "category": "problem-solving",
+      "tags": ["tools", "techniques", "troubleshooting"],
+      "difficulty": 3
+    },
+    {
+      "id": "problem-solving_004",
+      "question": "How did you approach a task you've never done before?",
+      "category": "problem-solving",
+      "tags": ["new", "approach", "strategy"],
+      "difficulty": 3
+    },
+    {
+      "id": "problem-solving_005",
+      "question": "What would you do differently if you encountered the same problem again?",
+      "category": "problem-solving",
+      "tags": ["improvement", "strategy", "learning"],
+      "difficulty": 4
+    },
+    {
+      "id": "problem-solving_006",
+      "question": "Who did you ask for help when you were stuck, and what did you learn?",
+      "category": "problem-solving",
+      "tags": ["help", "mentorship", "collaboration"],
+      "difficulty": 2
+    },
+    {
+      "id": "problem-solving_007",
+      "question": "What problem-solving strategy worked best for you this week?",
+      "category": "problem-solving",
+      "tags": ["strategy", "effectiveness", "methods"],
+      "difficulty": 3
+    },
+    {
+      "id": "problem-solving_008",
+      "question": "How do you break down complex problems into manageable parts?",
+      "category": "problem-solving",
+      "tags": ["complexity", "breakdown", "management"],
+      "difficulty": 4
+    },
+    {
+      "id": "achievement_001",
+      "question": "What accomplishment are you most proud of this week?",
+      "category": "achievement",
+      "tags": ["pride", "success", "accomplishment"],
+      "difficulty": 2
+    },
+    {
+      "id": "achievement_002",
+      "question": "How did you exceed expectations on a recent task?",
+      "category": "achievement",
+      "tags": ["excellence", "expectations", "performance"],
+      "difficulty": 3
+    },
+    {
+      "id": "achievement_003",
+      "question": "What positive feedback did you receive from your supervisor or mentor?",
+      "category": "achievement",
+      "tags": ["feedback", "recognition", "validation"],
+      "difficulty": 2
+    },
+    {
+      "id": "achievement_004",
+      "question": "What milestone in your apprenticeship did you recently reach?",
+      "category": "achievement",
+      "tags": ["milestone", "progress", "journey"],
+      "difficulty": 3
+    },
+    {
+      "id": "achievement_005",
+      "question": "How have you improved compared to when you first started?",
+      "category": "achievement",
+      "tags": ["improvement", "growth", "comparison"],
+      "difficulty": 3
+    },
+    {
+      "id": "achievement_006",
+      "question": "What project or task gave you the greatest sense of satisfaction?",
+      "category": "achievement",
+      "tags": ["satisfaction", "fulfillment", "project"],
+      "difficulty": 2
+    },
+    {
+      "id": "achievement_007",
+      "question": "What recognition or praise meant the most to you recently?",
+      "category": "achievement",
+      "tags": ["recognition", "praise", "meaning"],
+      "difficulty": 2
+    },
+    {
+      "id": "achievement_008",
+      "question": "How did you help a colleague or contribute to team success?",
+      "category": "achievement",
+      "tags": ["teamwork", "contribution", "collaboration"],
+      "difficulty": 3
+    },
+    {
+      "id": "reflection_001",
+      "question": "What aspect of your trade do you find most rewarding?",
+      "category": "reflection",
+      "tags": ["reward", "satisfaction", "trade"],
+      "difficulty": 3
+    },
+    {
+      "id": "reflection_002",
+      "question": "How has your confidence grown since starting your apprenticeship?",
+      "category": "reflection",
+      "tags": ["confidence", "growth", "development"],
+      "difficulty": 3
+    },
+    {
+      "id": "reflection_003",
+      "question": "What values are most important to you in your work?",
+      "category": "reflection",
+      "tags": ["values", "principles", "work"],
+      "difficulty": 4
+    },
+    {
+      "id": "reflection_004",
+      "question": "How do you maintain motivation during challenging times?",
+      "category": "reflection",
+      "tags": ["motivation", "challenges", "resilience"],
+      "difficulty": 4
+    },
+    {
+      "id": "reflection_005",
+      "question": "What advice would you give to someone just starting their apprenticeship?",
+      "category": "reflection",
+      "tags": ["advice", "wisdom", "guidance"],
+      "difficulty": 4
+    },
+    {
+      "id": "reflection_006",
+      "question": "How do you balance learning with productivity?",
+      "category": "reflection",
+      "tags": ["balance", "learning", "productivity"],
+      "difficulty": 4
+    },
+    {
+      "id": "reflection_007",
+      "question": "What personal strengths have you discovered through your work?",
+      "category": "reflection",
+      "tags": ["strengths", "discovery", "personal"],
+      "difficulty": 3
+    },
+    {
+      "id": "reflection_008",
+      "question": "How has your apprenticeship changed your perspective on your career?",
+      "category": "reflection",
+      "tags": ["perspective", "career", "change"],
+      "difficulty": 4
+    },
+    {
+      "id": "skills_001",
+      "question": "What technical skill are you most eager to develop further?",
+      "category": "skills",
+      "tags": ["technical", "development", "eagerness"],
+      "difficulty": 2
+    },
+    {
+      "id": "skills_002",
+      "question": "How do you practice and refine your craft outside of work hours?",
+      "category": "skills",
+      "tags": ["practice", "refinement", "dedication"],
+      "difficulty": 3
+    },
+    {
+      "id": "skills_003",
+      "question": "What soft skills have become more important than you initially thought?",
+      "category": "skills",
+      "tags": ["soft-skills", "importance", "realization"],
+      "difficulty": 3
+    },
+    {
+      "id": "skills_004",
+      "question": "How do you stay current with new technologies in your field?",
+      "category": "skills",
+      "tags": ["technology", "current", "learning"],
+      "difficulty": 3
+    },
+    {
+      "id": "skills_005",
+      "question": "What skill gap are you working to close?",
+      "category": "skills",
+      "tags": ["gap", "improvement", "focus"],
+      "difficulty": 3
+    },
+    {
+      "id": "skills_006",
+      "question": "How do you measure your progress in skill development?",
+      "category": "skills",
+      "tags": ["measurement", "progress", "assessment"],
+      "difficulty": 4
+    },
+    {
+      "id": "skills_007",
+      "question": "What certification or qualification are you working toward?",
+      "category": "skills",
+      "tags": ["certification", "qualification", "goals"],
+      "difficulty": 2
+    },
+    {
+      "id": "skills_008",
+      "question": "How do you learn best - through observation, practice, or instruction?",
+      "category": "skills",
+      "tags": ["learning-style", "preference", "method"],
+      "difficulty": 3
+    },
+    {
+      "id": "teamwork_001",
+      "question": "How did you collaborate effectively with others today?",
+      "category": "teamwork",
+      "tags": ["collaboration", "effectiveness", "team"],
+      "difficulty": 2
+    },
+    {
+      "id": "teamwork_002",
+      "question": "What did you learn from observing experienced colleagues?",
+      "category": "teamwork",
+      "tags": ["observation", "experience", "learning"],
+      "difficulty": 2
+    },
+    {
+      "id": "teamwork_003",
+      "question": "How do you communicate technical information to non-technical people?",
+      "category": "teamwork",
+      "tags": ["communication", "technical", "clarity"],
+      "difficulty": 4
+    },
+    {
+      "id": "teamwork_004",
+      "question": "What role do you typically play in team projects?",
+      "category": "teamwork",
+      "tags": ["role", "projects", "contribution"],
+      "difficulty": 3
+    },
+    {
+      "id": "teamwork_005",
+      "question": "How do you handle disagreements or conflicts in the workplace?",
+      "category": "teamwork",
+      "tags": ["conflict", "resolution", "workplace"],
+      "difficulty": 4
+    },
+    {
+      "id": "teamwork_006",
+      "question": "What makes a good mentor in your opinion?",
+      "category": "teamwork",
+      "tags": ["mentorship", "qualities", "guidance"],
+      "difficulty": 3
+    },
+    {
+      "id": "teamwork_007",
+      "question": "How do you contribute to a positive work environment?",
+      "category": "teamwork",
+      "tags": ["environment", "positivity", "contribution"],
+      "difficulty": 3
+    },
+    {
+      "id": "teamwork_008",
+      "question": "What have you learned about leadership through your apprenticeship?",
+      "category": "teamwork",
+      "tags": ["leadership", "learning", "development"],
+      "difficulty": 4
+    },
+    {
+      "id": "safety_001",
+      "question": "What safety practice did you follow particularly well today?",
+      "category": "safety",
+      "tags": ["practice", "compliance", "excellence"],
+      "difficulty": 2
+    },
+    {
+      "id": "safety_002",
+      "question": "How do you stay alert and focused during repetitive tasks?",
+      "category": "safety",
+      "tags": ["alertness", "focus", "repetition"],
+      "difficulty": 3
+    },
+    {
+      "id": "safety_003",
+      "question": "What potential hazard did you identify and address?",
+      "category": "safety",
+      "tags": ["hazard", "identification", "prevention"],
+      "difficulty": 3
+    },
+    {
+      "id": "safety_004",
+      "question": "How do you ensure you're using personal protective equipment correctly?",
+      "category": "safety",
+      "tags": ["PPE", "compliance", "protection"],
+      "difficulty": 2
+    },
+    {
+      "id": "safety_005",
+      "question": "What safety tip would you share with other apprentices?",
+      "category": "safety",
+      "tags": ["tips", "sharing", "wisdom"],
+      "difficulty": 3
+    },
+    {
+      "id": "safety_006",
+      "question": "How do you balance efficiency with safety requirements?",
+      "category": "safety",
+      "tags": ["balance", "efficiency", "requirements"],
+      "difficulty": 4
+    },
+    {
+      "id": "safety_007",
+      "question": "What safety training has been most valuable to you?",
+      "category": "safety",
+      "tags": ["training", "value", "education"],
+      "difficulty": 2
+    },
+    {
+      "id": "safety_008",
+      "question": "How do you speak up when you notice unsafe conditions?",
+      "category": "safety",
+      "tags": ["communication", "unsafe", "advocacy"],
+      "difficulty": 4
+    },
+    {
+      "id": "goals_001",
+      "question": "What do you hope to achieve by the end of your apprenticeship?",
+      "category": "goals",
+      "tags": ["achievement", "completion", "aspirations"],
+      "difficulty": 3
+    },
+    {
+      "id": "goals_002",
+      "question": "Where do you see yourself in five years?",
+      "category": "goals",
+      "tags": ["future", "vision", "career"],
+      "difficulty": 3
+    },
+    {
+      "id": "goals_003",
+      "question": "What specialization within your trade interests you most?",
+      "category": "goals",
+      "tags": ["specialization", "interest", "focus"],
+      "difficulty": 3
+    },
+    {
+      "id": "goals_004",
+      "question": "How are you preparing for your journeyman certification?",
+      "category": "goals",
+      "tags": ["certification", "preparation", "journeyman"],
+      "difficulty": 3
+    },
+    {
+      "id": "goals_005",
+      "question": "What additional training or education are you considering?",
+      "category": "goals",
+      "tags": ["training", "education", "advancement"],
+      "difficulty": 2
+    },
+    {
+      "id": "goals_006",
+      "question": "What type of projects would you like to work on in the future?",
+      "category": "goals",
+      "tags": ["projects", "future", "interests"],
+      "difficulty": 2
+    },
+    {
+      "id": "goals_007",
+      "question": "How do you plan to give back to the apprenticeship community?",
+      "category": "goals",
+      "tags": ["giving-back", "community", "mentorship"],
+      "difficulty": 4
+    },
+    {
+      "id": "goals_008",
+      "question": "What legacy do you want to leave in your trade?",
+      "category": "goals",
+      "tags": ["legacy", "impact", "contribution"],
+      "difficulty": 5
+    }
+  ]
+}
