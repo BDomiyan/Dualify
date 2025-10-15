@@ -5,7 +5,7 @@ import '../../data/datasources/local/local_datasources.dart';
 import '../../data/repositories/repositories.dart';
 import '../../domain/repositories/repositories.dart';
 import '../../domain/usecases/usecases.dart';
-import '../../presentation/features/auth/blocs/auth_bloc.dart';
+import '../../presentation/features/login/blocs/auth_bloc.dart';
 import '../../presentation/features/profile/blocs/profile_bloc.dart';
 import '../../presentation/features/dashboard/blocs/dashboard_bloc.dart';
 import '../../presentation/features/onboarding/blocs/onboarding_bloc.dart';

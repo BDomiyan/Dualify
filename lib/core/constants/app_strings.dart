@@ -93,10 +93,64 @@ class AppStrings {
   // TRADES
   // ============================================================================
   static const List<String> tradeOptions = [
+    // Technology & Office Trades
+    'IT Support Technician',
+    'Network Technician',
+    'Graphic Designer',
+    'Digital Marketing Assistant',
+    'Data Entry Operator',
+
+    // Construction & Building
     'Electrician',
     'Plumber',
     'Carpenter',
     'Welder',
+    'Mason',
+    'Roofer',
+    'Painter',
+    'Construction Laborer',
+    'Heavy Equipment Operator',
+
+    // Mechanical & Automotive
+    'Automotive Technician',
+    'Diesel Mechanic',
+    'Machinist',
+    'CNC Operator',
+    'HVAC Technician',
+
+    // Manufacturing & Industrial
+    'Fabricator',
+    'Maintenance Technician',
+    'Industrial Mechanic',
+    'Tool and Die Maker',
+
+    // Culinary & Hospitality
+    'Chef',
+    'Baker',
+    'Butcher',
+    'Barista',
+    'Housekeeper',
+    'Hotel Management Trainee',
+
+    // Beauty & Personal Care
+    'Hairdresser',
+    'Barber',
+    'Beautician',
+    'Makeup Artist',
+    'Spa Therapist',
+
+    // Agriculture & Environment
+    'Gardener',
+    'Landscaper',
+    'Farm Equipment Operator',
+    'Horticulturist',
+
+    // Other Skilled Professions
+    'Tailor',
+    'Jewelry Maker',
+    'Photographer',
+    'Printer Technician',
+    'Furniture Finisher',
   ];
 
   // ============================================================================
@@ -133,10 +187,8 @@ class AppStrings {
   // Community features
   static const List<String> communityFeatures = [
     'Discussion forums by trade',
-    'Peer mentorship programs',
     'Experience sharing',
     'Q&A with experts',
-    'Local meetup coordination',
   ];
 
   // AI Assistant features
