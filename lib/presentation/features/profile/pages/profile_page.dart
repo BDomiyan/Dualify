@@ -2,15 +2,15 @@ import 'package:dualify_dashboard/presentation/widgets/dualify_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_spacing.dart';
-import '../../core/constants/constants.dart';
-import '../blocs/profile/profile_bloc.dart';
-import '../blocs/dashboard/dashboard_bloc.dart';
-import '../widgets/dualify_text_field.dart';
-import '../widgets/dualify_dropdown.dart';
-import '../widgets/dualify_date_picker.dart';
-import '../widgets/feedback_widgets.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/constants/constants.dart';
+import '../blocs/profile_bloc.dart';
+import '../../dashboard/blocs/dashboard_bloc.dart';
+import '../../../widgets/dualify_text_field.dart';
+import '../../../widgets/dualify_dropdown.dart';
+import '../../../widgets/dualify_date_picker.dart';
+import '../../../widgets/feedback_widgets.dart';
 
 /// Profile page for viewing and editing user information
 class ProfilePage extends StatefulWidget {
@@ -87,7 +87,9 @@ class _ProfilePageState extends State<ProfilePage> {
       final nameParts = fullName.split(' ');
       final firstName = nameParts.first;
       final lastName =
-          nameParts.length > 1 ? nameParts.sublist(1).join(' ') : AppConstants.defaultLastName;
+          nameParts.length > 1
+              ? nameParts.sublist(1).join(' ')
+              : AppConstants.defaultLastName;
 
       final durationMonths = int.tryParse(_durationController.text.trim()) ?? 0;
       final calculatedEndDate = DateTime(
@@ -114,10 +116,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _selectDate(BuildContext context) async {
     final firstDate = DateTime.now().subtract(
-      Duration(days: AppConstants.daysInYear * AppConstants.datePickerYearsPast),
+      Duration(
+        days: AppConstants.daysInYear * AppConstants.datePickerYearsPast,
+      ),
     );
     final lastDate = DateTime.now().add(
-      Duration(days: AppConstants.daysInYear * AppConstants.datePickerYearsFuture),
+      Duration(
+        days: AppConstants.daysInYear * AppConstants.datePickerYearsFuture,
+      ),
     );
 
     final selectedDate = await showDatePicker(

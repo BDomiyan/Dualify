@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/constants/app_strings.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_text_styles.dart';
-import '../../core/theme/app_dimensions.dart';
-import '../../core/theme/app_spacing.dart';
-import '../../core/theme/app_animations.dart';
-import '../../core/storage/shared_preferences_service.dart';
-import '../blocs/profile/profile_bloc.dart';
+import '../../../../core/constants/app_strings.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_dimensions.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_animations.dart';
+import '../../../../core/storage/shared_preferences_service.dart';
+import '../../profile/blocs/profile_bloc.dart';
 
 /// Splash screen that handles initial app routing
 class SplashPage extends StatefulWidget {
@@ -69,20 +69,26 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   void _startAnimations() {
     _logoController.forward();
 
-    Future.delayed(const Duration(milliseconds: AppConstants.splashAnimationDelay), () {
-      if (mounted) {
-        _fadeController.forward();
-      }
-    });
+    Future.delayed(
+      const Duration(milliseconds: AppConstants.splashAnimationDelay),
+      () {
+        if (mounted) {
+          _fadeController.forward();
+        }
+      },
+    );
   }
 
   void _checkAuthStatus() {
     // Wait for animations to complete before checking navigation
-    Future.delayed(const Duration(milliseconds: AppConstants.splashInitialDelay), () {
-      if (mounted) {
-        _determineInitialRoute();
-      }
-    });
+    Future.delayed(
+      const Duration(milliseconds: AppConstants.splashInitialDelay),
+      () {
+        if (mounted) {
+          _determineInitialRoute();
+        }
+      },
+    );
   }
 
   void _determineInitialRoute() {
@@ -127,7 +133,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                           borderRadius: AppDimensions.radiusXXLBorder,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(AppConstants.opacity20),
+                              color: Colors.black.withOpacity(
+                                AppConstants.opacity20,
+                              ),
                               blurRadius: AppConstants.splashShadowBlurRadius,
                               spreadRadius: AppConstants.splashShadowSpread,
                             ),
@@ -149,9 +157,14 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                           color: AppColors.white,
                           shadows: [
                             Shadow(
-                              offset: const Offset(AppConstants.splashShadowOffsetX, AppConstants.splashShadowOffsetY),
+                              offset: const Offset(
+                                AppConstants.splashShadowOffsetX,
+                                AppConstants.splashShadowOffsetY,
+                              ),
                               blurRadius: AppConstants.splashShadowBlur,
-                              color: Colors.black.withOpacity(AppConstants.opacity30),
+                              color: Colors.black.withOpacity(
+                                AppConstants.opacity30,
+                              ),
                             ),
                           ],
                         ),
@@ -258,11 +271,14 @@ class _MinimalSplashPageState extends State<MinimalSplashPage>
     _controller.forward();
 
     // Navigate after delay
-    Future.delayed(const Duration(milliseconds: AppConstants.navigationDelay), () {
-      if (mounted) {
-        Navigator.of(context).pushReplacementNamed('/login');
-      }
-    });
+    Future.delayed(
+      const Duration(milliseconds: AppConstants.navigationDelay),
+      () {
+        if (mounted) {
+          Navigator.of(context).pushReplacementNamed('/login');
+        }
+      },
+    );
   }
 
   @override
@@ -281,7 +297,11 @@ class _MinimalSplashPageState extends State<MinimalSplashPage>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.school, size: AppConstants.iconSize64 + AppConstants.iconSize20, color: AppColors.white),
+              Icon(
+                Icons.school,
+                size: AppConstants.iconSize64 + AppConstants.iconSize20,
+                color: AppColors.white,
+              ),
 
               AppSpacing.verticalSpaceLG,
 

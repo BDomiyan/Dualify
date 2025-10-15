@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../core/errors/failures.dart';
-import '../../../core/utils/logger.dart';
-import '../../../domain/entities/entities.dart';
-import '../../../domain/usecases/usecases.dart';
+import '../../../../core/errors/failures.dart';
+import '../../../../core/utils/logger.dart';
+import '../../../../domain/entities/entities.dart';
+import '../../../../domain/usecases/usecases.dart';
 
 // Events
 abstract class ProfileEvent extends Equatable {

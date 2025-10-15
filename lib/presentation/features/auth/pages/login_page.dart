@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/constants/app_strings.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_text_styles.dart';
-import '../../core/theme/app_dimensions.dart';
-import '../../core/theme/app_spacing.dart';
-import '../../core/theme/app_animations.dart';
-import '../../core/storage/shared_preferences_service.dart';
-import '../blocs/auth/auth_bloc.dart';
-import '../widgets/background_decorations.dart';
+import '../../../../core/constants/app_strings.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_dimensions.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_animations.dart';
+import '../../../../core/storage/shared_preferences_service.dart';
+import '../blocs/auth_bloc.dart';
+import '../../../widgets/background_decorations.dart';
 
 /// Login page with Google sign-in and decorative background
 class LoginPage extends StatefulWidget {
@@ -121,7 +121,9 @@ class _LoginPageState extends State<LoginPage>
                         Text(
                           AppStrings.loginTitle,
                           style: AppTextStyles.loginBody.copyWith(
-                            color: AppColors.white.withValues(alpha: AppConstants.opacity95),
+                            color: AppColors.white.withValues(
+                              alpha: AppConstants.opacity95,
+                            ),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -131,7 +133,9 @@ class _LoginPageState extends State<LoginPage>
                         Text(
                           AppStrings.loginSubtitle,
                           style: AppTextStyles.loginSubtitle.copyWith(
-                            color: AppColors.white.withValues(alpha: AppConstants.opacity85),
+                            color: AppColors.white.withValues(
+                              alpha: AppConstants.opacity85,
+                            ),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -162,7 +166,8 @@ class _LoginPageState extends State<LoginPage>
                                         width: AppConstants.iconSize20,
                                         height: AppConstants.iconSize20,
                                         child: CircularProgressIndicator(
-                                          strokeWidth: AppConstants.loadingStrokeWidth,
+                                          strokeWidth:
+                                              AppConstants.loadingStrokeWidth,
                                           valueColor:
                                               AlwaysStoppedAnimation<Color>(
                                                 AppColors.primary,
@@ -212,7 +217,9 @@ class _LoginPageState extends State<LoginPage>
                       Text(
                         AppStrings.mockLoginDisclaimer,
                         style: AppTextStyles.labelSmall.copyWith(
-                          color: AppColors.white.withValues(alpha: AppConstants.opacity80),
+                          color: AppColors.white.withValues(
+                            alpha: AppConstants.opacity80,
+                          ),
                           fontStyle: FontStyle.italic,
                         ),
                         textAlign: TextAlign.center,
@@ -231,7 +238,9 @@ class _LoginPageState extends State<LoginPage>
                     child: Text(
                       AppStrings.termsAndPrivacy,
                       style: AppTextStyles.labelSmall.copyWith(
-                        color: AppColors.white.withValues(alpha: AppConstants.opacity70),
+                        color: AppColors.white.withValues(
+                          alpha: AppConstants.opacity70,
+                        ),
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -330,7 +339,9 @@ class _LoginFormPageState extends State<LoginFormPage> {
                     if (value == null || value.isEmpty) {
                       return AppStrings.emailRequired;
                     }
-                    if (!RegExp(AppConstants.emailRegexPattern).hasMatch(value)) {
+                    if (!RegExp(
+                      AppConstants.emailRegexPattern,
+                    ).hasMatch(value)) {
                       return AppStrings.invalidEmail;
                     }
                     return null;
@@ -406,7 +417,8 @@ class _LoginFormPageState extends State<LoginFormPage> {
                                   width: AppConstants.loadingIndicatorSize,
                                   height: AppConstants.loadingIndicatorSize,
                                   child: CircularProgressIndicator(
-                                    strokeWidth: AppConstants.loadingStrokeWidth,
+                                    strokeWidth:
+                                        AppConstants.loadingStrokeWidth,
                                     valueColor: AlwaysStoppedAnimation<Color>(
                                       AppColors.white,
                                     ),

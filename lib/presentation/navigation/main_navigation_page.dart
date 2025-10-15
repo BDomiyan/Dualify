@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_constants.dart';
-import 'dashboard_page.dart';
-import 'community_page.dart';
-import 'ai_assistant_page.dart';
-import 'profile_page.dart';
+import '../features/dashboard/pages/dashboard_page.dart';
+import '../features/community/pages/community_page.dart';
+import '../features/ai_assistant/pages/ai_assistant_page.dart';
+import '../features/profile/pages/profile_page.dart';
 import '../widgets/bottom_nav_bar.dart';
 
 /// Main navigation wrapper that handles bottom navigation
@@ -52,7 +52,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   void _onNavTap(int index) {
     _pageController.animateToPage(
       index,
-      duration: const Duration(milliseconds: AppConstants.mainNavigationAnimationDuration),
+      duration: const Duration(
+        milliseconds: AppConstants.mainNavigationAnimationDuration,
+      ),
       curve: Curves.easeInOut,
     );
   }

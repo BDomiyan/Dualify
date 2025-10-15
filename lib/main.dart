@@ -5,14 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/di/injection_container.dart' as di;
 import 'core/theme/app_theme.dart';
 import 'core/utils/logger.dart';
-import 'presentation/blocs/auth/auth_bloc.dart';
-import 'presentation/blocs/profile/profile_bloc.dart';
-import 'presentation/blocs/dashboard/dashboard_bloc.dart';
-import 'presentation/blocs/onboarding/onboarding_bloc.dart';
-import 'presentation/pages/login_page.dart';
-import 'presentation/pages/splash_page.dart';
-import 'presentation/pages/onboarding_page.dart';
-import 'presentation/pages/main_navigation_page.dart';
+import 'presentation/features/auth/blocs/auth_bloc.dart';
+import 'presentation/features/profile/blocs/profile_bloc.dart';
+import 'presentation/features/dashboard/blocs/dashboard_bloc.dart';
+import 'presentation/features/onboarding/blocs/onboarding_bloc.dart';
+import 'presentation/features/auth/pages/login_page.dart';
+import 'presentation/features/splash/pages/splash_page.dart';
+import 'presentation/features/onboarding/pages/onboarding_page.dart';
+import 'presentation/navigation/main_navigation_page.dart';
 
 /// Main entry point of the Dualify Dashboard application
 /// Initializes dependencies and starts the app

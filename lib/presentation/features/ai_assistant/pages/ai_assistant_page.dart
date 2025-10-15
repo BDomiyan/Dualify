@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
-import '../../core/constants/app_constants.dart';
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_text_styles.dart';
-import '../../core/theme/app_dimensions.dart';
-import '../../core/theme/app_spacing.dart';
-import '../../core/theme/app_animations.dart';
-import '../widgets/bottom_nav_bar.dart';
+import '../../../../core/constants/app_strings.dart';
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/theme/app_dimensions.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_animations.dart';
+import '../../../widgets/bottom_nav_bar.dart';
 
 /// AI Assistant placeholder screen
 class AiAssistantPage extends StatefulWidget {
@@ -88,7 +88,9 @@ class _AiAssistantPageState extends State<AiAssistantPage>
                     width: AppConstants.comingSoonIconContainerSize,
                     height: AppConstants.comingSoonIconContainerSize,
                     decoration: BoxDecoration(
-                      color: AppColors.accent.withOpacity(AppConstants.opacity10),
+                      color: AppColors.accent.withOpacity(
+                        AppConstants.opacity10,
+                      ),
                       borderRadius: AppDimensions.radiusXXLBorder,
                     ),
                     child: Icon(
@@ -207,12 +209,18 @@ class _AiAssistantPageState extends State<AiAssistantPage>
       decoration: BoxDecoration(
         color: AppColors.cardBackground,
         borderRadius: AppDimensions.radiusLGBorder,
-        border: Border.all(color: AppColors.borderLight, width: AppConstants.borderWidth1),
+        border: Border.all(
+          color: AppColors.borderLight,
+          width: AppConstants.borderWidth1,
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.shadowLight,
             blurRadius: AppConstants.elevation4,
-            offset: const Offset(AppConstants.elevation0, AppConstants.elevation2),
+            offset: const Offset(
+              AppConstants.elevation0,
+              AppConstants.elevation2,
+            ),
           ),
         ],
       ),
@@ -228,7 +236,11 @@ class _AiAssistantPageState extends State<AiAssistantPage>
                   color: AppColors.accent.withOpacity(AppConstants.opacity10),
                   borderRadius: AppDimensions.radiusMDBorder,
                 ),
-                child: Icon(Icons.smart_toy, size: AppConstants.iconSize20, color: AppColors.accent),
+                child: Icon(
+                  Icons.smart_toy,
+                  size: AppConstants.iconSize20,
+                  color: AppColors.accent,
+                ),
               ),
 
               AppSpacing.horizontalSpaceSM,

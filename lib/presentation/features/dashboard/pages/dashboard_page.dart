@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_spacing.dart';
-import '../../core/theme/app_dimensions.dart';
-import '../../core/constants/constants.dart';
-import '../blocs/dashboard/dashboard_bloc.dart';
-import '../widgets/header_section.dart';
-import '../widgets/progress_section.dart';
-import '../widgets/verification_card.dart';
-import '../widgets/daily_log_card.dart';
-import '../widgets/question_card.dart';
-import '../widgets/bottom_nav_bar.dart';
-import '../../domain/entities/entities.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_dimensions.dart';
+import '../../../../core/constants/constants.dart';
+import '../blocs/dashboard_bloc.dart';
+import '../../../widgets/header_section.dart';
+import '../../../widgets/progress_section.dart';
+import '../../../widgets/verification_card.dart';
+import '../../../widgets/daily_log_card.dart';
+import '../../../widgets/question_card.dart';
+import '../../../widgets/bottom_nav_bar.dart';
+import '../../../../domain/entities/entities.dart';
 
 /// Main dashboard page matching HTML design exactly
 class DashboardPage extends StatefulWidget {
@@ -217,7 +217,9 @@ class _DashboardPageState extends State<DashboardPage> {
                           onTap: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(AppStrings.verificationComingSoon),
+                                content: Text(
+                                  AppStrings.verificationComingSoon,
+                                ),
                               ),
                             );
                           },
@@ -225,7 +227,9 @@ class _DashboardPageState extends State<DashboardPage> {
                         AppSpacing.verticalSpaceMD,
                         VerificationCard(
                           title: AppStrings.schoolLabel,
-                          subtitle: data.profile!.schoolName ?? AppStrings.defaultSchool,
+                          subtitle:
+                              data.profile!.schoolName ??
+                              AppStrings.defaultSchool,
                           icon: Icons.school,
                           iconBackgroundColor: AppColors.accent.withOpacity(
                             AppConstants.opacity10,
@@ -234,7 +238,9 @@ class _DashboardPageState extends State<DashboardPage> {
                           onTap: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(AppStrings.verificationComingSoon),
+                                content: Text(
+                                  AppStrings.verificationComingSoon,
+                                ),
                               ),
                             );
                           },
@@ -296,7 +302,9 @@ class _DashboardPageState extends State<DashboardPage> {
   List<DateTime> _generateLast7Days() {
     final today = DateTime.now();
     return List.generate(AppConstants.defaultDaysToGenerate, (index) {
-      return today.subtract(Duration(days: AppConstants.defaultDaysOffset - index));
+      return today.subtract(
+        Duration(days: AppConstants.defaultDaysOffset - index),
+      );
     });
   }
 
@@ -393,7 +401,10 @@ class _StatusOption extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(emoji, style: TextStyle(fontSize: AppConstants.statusOptionEmojiSize)),
+            Text(
+              emoji,
+              style: TextStyle(fontSize: AppConstants.statusOptionEmojiSize),
+            ),
             AppSpacing.horizontalSpaceLG,
             Expanded(
               child: Column(
