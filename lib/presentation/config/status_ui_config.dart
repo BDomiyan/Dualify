@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/daily_log.dart';
-import '../../domain/entities/auth_user.dart';
-import '../../domain/entities/question_of_the_day.dart';
+import '../../domain/entities/entities.dart';
 
 /// UI configuration for daily log statuses
 /// Separates presentation concerns from domain logic
