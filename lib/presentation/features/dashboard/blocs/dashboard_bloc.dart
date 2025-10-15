@@ -1,190 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/utils/logger.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../../domain/usecases/usecases.dart';
+import 'dashboard_data.dart';
+import 'dashboard_event.dart';
+import 'dashboard_state.dart';
 
-// Events
-abstract class DashboardEvent extends Equatable {
-  const DashboardEvent();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class DashboardLoadRequested extends DashboardEvent {
-  const DashboardLoadRequested();
-}
-
-class DashboardRefreshRequested extends DashboardEvent {
-  const DashboardRefreshRequested();
-}
-
-class DailyStatusUpdateRequested extends DashboardEvent {
-  final DateTime date;
-  final String status;
-  final String? notes;
-
-  const DailyStatusUpdateRequested({
-    required this.date,
-    required this.status,
-    this.notes,
-  });
-
-  @override
-  List<Object?> get props => [date, status, notes];
-}
-
-class QuestionOfTheDayRefreshRequested extends DashboardEvent {
-  const QuestionOfTheDayRefreshRequested();
-}
-
-// States
-abstract class DashboardState extends Equatable {
-  const DashboardState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class DashboardInitial extends DashboardState {
-  const DashboardInitial();
-}
-
-class DashboardLoading extends DashboardState {
-  const DashboardLoading();
-}
-
-class DashboardLoaded extends DashboardState {
-  final DashboardData dashboardData;
-
-  const DashboardLoaded({required this.dashboardData});
-
-  @override
-  List<Object?> get props => [dashboardData];
-}
-
-class DashboardError extends DashboardState {
-  final String message;
-  final String? code;
-  final bool isRecoverable;
-
-  const DashboardError({
-    required this.message,
-    this.code,
-    this.isRecoverable = true,
-  });
-
-  @override
-  List<Object?> get props => [message, code, isRecoverable];
-}
-
-class DashboardUpdating extends DashboardState {
-  final DashboardData currentData;
-  final String updateType;
-
-  const DashboardUpdating({
-    required this.currentData,
-    required this.updateType,
-  });
-
-  @override
-  List<Object?> get props => [currentData, updateType];
-}
-
-// Dashboard Data Model
-class DashboardData extends Equatable {
-  final ApprenticeProfile? profile;
-  final ProgressCalculationResult? progressData;
-  final List<DailyLog> dailyLogs;
-  final QuestionOfTheDay? questionOfTheDay;
-  final DateTime lastUpdated;
-
-  const DashboardData({
-    this.profile,
-    this.progressData,
-    this.dailyLogs = const [],
-    this.questionOfTheDay,
-    required this.lastUpdated,
-  });
-
-  @override
-  List<Object?> get props => [
-    profile,
-    progressData,
-    dailyLogs,
-    questionOfTheDay,
-    lastUpdated,
-  ];
-
-  DashboardData copyWith({
-    ApprenticeProfile? profile,
-    ProgressCalculationResult? progressData,
-    List<DailyLog>? dailyLogs,
-    QuestionOfTheDay? questionOfTheDay,
-    DateTime? lastUpdated,
-  }) {
-    return DashboardData(
-      profile: profile ?? this.profile,
-      progressData: progressData ?? this.progressData,
-      dailyLogs: dailyLogs ?? this.dailyLogs,
-      questionOfTheDay: questionOfTheDay ?? this.questionOfTheDay,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
-    );
-  }
-
-  /// Gets daily logs for the last 7 days
-  List<DailyLog> get recentDailyLogs {
-    final now = DateTime.now();
-    final sevenDaysAgo = now.subtract(const Duration(days: 6));
-
-    return dailyLogs
-        .where(
-          (log) =>
-              log.date.isAfter(
-                sevenDaysAgo.subtract(const Duration(days: 1)),
-              ) &&
-              log.date.isBefore(now.add(const Duration(days: 1))),
-        )
-        .toList()
-      ..sort((a, b) => a.date.compareTo(b.date));
-  }
-
-  /// Checks if profile setup is complete
-  bool get isProfileComplete => profile != null;
-
-  /// Checks if there are any daily logs
-  bool get hasDailyLogs => dailyLogs.isNotEmpty;
-
-  /// Gets the current streak of logged days
-  int get currentStreak {
-    if (dailyLogs.isEmpty) return 0;
-
-    final sortedLogs = List<DailyLog>.from(dailyLogs)
-      ..sort((a, b) => b.date.compareTo(a.date));
-
-    int streak = 0;
-    DateTime currentDate = DateTime.now();
-
-    for (final log in sortedLogs) {
-      final daysDifference = currentDate.difference(log.date).inDays;
-
-      if (daysDifference == streak) {
-        streak++;
-      } else {
-        break;
-      }
-    }
-
-    return streak;
-  }
-}
-
-// BLoC
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final GetDashboardDataUseCase _getDashboardDataUseCase;
   final UpdateDailyStatusUseCase _updateDailyStatusUseCase;
@@ -230,11 +55,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         (dashboardResult) {
           AppLogger.info('Dashboard loaded successfully');
 
-          final dashboardData = DashboardData(
+          final dashboardData = DashboardViewModel(
             profile: dashboardResult.profile,
             progressData: dashboardResult.progressData,
-            dailyLogs: dashboardResult.dailyLogs,
-            questionOfTheDay: dashboardResult.questionOfTheDay,
+            dailyLogs: dashboardResult.recentDailyLogs,
+            questionOfTheDay: dashboardResult.todaysQuestion,
             lastUpdated: DateTime.now(),
           );
 
@@ -436,16 +261,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   /// Determines if a failure is recoverable
   bool _isRecoverableFailure(Failure failure) {
-    switch (failure.runtimeType) {
-      case NetworkFailure:
+    switch (failure) {
+      case NetworkFailure():
         return true; // Network issues are usually temporary
-      case DatabaseFailure:
-        final dbFailure = failure as DatabaseFailure;
+      case DatabaseFailure():
+        final dbFailure = failure;
         // Some database errors are not recoverable
         return dbFailure.code != 'DB_008'; // Data corruption
-      case ValidationFailure:
+      case ValidationFailure():
         return true; // User can correct validation errors
-      case StorageFailure:
+      case StorageFailure():
         return true; // Storage issues are usually temporary
       default:
         return true; // Default to recoverable
@@ -453,7 +278,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   }
 
   /// Gets the current dashboard data
-  DashboardData? get currentDashboardData {
+  DashboardViewModel? get currentDashboardData {
     final currentState = state;
     if (currentState is DashboardLoaded) {
       return currentState.dashboardData;

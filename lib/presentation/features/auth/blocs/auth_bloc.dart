@@ -1,119 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/utils/logger.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../../domain/usecases/usecases.dart';
+import 'auth_event.dart';
+import 'auth_state.dart';
 
-// Events
-abstract class AuthEvent extends Equatable {
-  const AuthEvent();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class AuthCheckRequested extends AuthEvent {
-  const AuthCheckRequested();
-}
-
-class AuthSignInWithGoogleRequested extends AuthEvent {
-  const AuthSignInWithGoogleRequested();
-}
-
-class AuthSignInWithAppleRequested extends AuthEvent {
-  const AuthSignInWithAppleRequested();
-}
-
-class AuthSignInWithEmailRequested extends AuthEvent {
-  final String email;
-  final String password;
-
-  const AuthSignInWithEmailRequested({
-    required this.email,
-    required this.password,
-  });
-
-  @override
-  List<Object?> get props => [email, password];
-}
-
-class AuthSignInAnonymouslyRequested extends AuthEvent {
-  const AuthSignInAnonymouslyRequested();
-}
-
-class AuthSignInWithMockRequested extends AuthEvent {
-  final String? email;
-  final String? displayName;
-
-  const AuthSignInWithMockRequested({this.email, this.displayName});
-
-  @override
-  List<Object?> get props => [email, displayName];
-}
-
-class AuthSignOutRequested extends AuthEvent {
-  const AuthSignOutRequested();
-}
-
-class AuthUserUpdated extends AuthEvent {
-  final AuthUser? user;
-
-  const AuthUserUpdated(this.user);
-
-  @override
-  List<Object?> get props => [user];
-}
-
-// States
-abstract class AuthState extends Equatable {
-  const AuthState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class AuthInitial extends AuthState {
-  const AuthInitial();
-}
-
-class AuthLoading extends AuthState {
-  const AuthLoading();
-}
-
-class AuthAuthenticated extends AuthState {
-  final AuthUser user;
-  final bool isSessionValid;
-
-  const AuthAuthenticated({required this.user, this.isSessionValid = true});
-
-  @override
-  List<Object?> get props => [user, isSessionValid];
-}
-
-class AuthUnauthenticated extends AuthState {
-  const AuthUnauthenticated();
-}
-
-class AuthError extends AuthState {
-  final String message;
-  final String? code;
-  final bool isRecoverable;
-
-  const AuthError({
-    required this.message,
-    this.code,
-    this.isRecoverable = true,
-  });
-
-  @override
-  List<Object?> get props => [message, code, isRecoverable];
-}
-
-// BLoC
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CheckAuthStatusUseCase _checkAuthStatusUseCase;
   final SignInWithMockGoogleUseCase _signInWithGoogleUseCase;
@@ -396,14 +291,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   /// Determines if a failure is recoverable
   bool _isRecoverableFailure(Failure failure) {
     // Most auth failures are recoverable (user can retry)
-    switch (failure.runtimeType) {
-      case AuthFailure:
-        final authFailure = failure as AuthFailure;
+    switch (failure) {
+      case AuthFailure():
+        final authFailure = failure;
         // Session expired or invalid credentials are recoverable
         return authFailure.code != 'ACCOUNT_DISABLED';
-      case NetworkFailure:
+      case NetworkFailure():
         return true; // Network issues are usually temporary
-      case ValidationFailure:
+      case ValidationFailure():
         return true; // User can correct validation errors
       default:
         return true; // Default to recoverable

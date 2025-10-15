@@ -10,6 +10,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_animations.dart';
 import '../../../../core/storage/shared_preferences_service.dart';
 import '../../profile/blocs/profile_bloc.dart';
+import '../../profile/blocs/profile_state.dart';
 
 /// Splash screen that handles initial app routing
 class SplashPage extends StatefulWidget {

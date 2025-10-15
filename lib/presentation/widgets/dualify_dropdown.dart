@@ -36,13 +36,10 @@ class DualifyDropdown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: AppTextStyles.inputLabel,
-        ),
+        Text(label, style: AppTextStyles.inputLabel),
         AppSpacing.verticalSpaceXS,
         DropdownButtonFormField<String>(
-          value: value?.isEmpty == true ? null : value,
+          initialValue: value?.isEmpty == true ? null : value,
           onChanged: onChanged,
           validator: validator,
           decoration: InputDecoration(

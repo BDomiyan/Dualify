@@ -178,7 +178,6 @@ class AppStrings {
   // ============================================================================
   static const String notificationsComingSoon = 'Notifications coming soon!';
   static const String responsesComingSoon = 'Responses coming soon!';
-  static const String verificationComingSoon = 'Verification coming soon!';
   static const String useMainNavigation = 'Use main navigation';
   static const String updatingLatestQuestions = 'Updating Latest questions...';
 

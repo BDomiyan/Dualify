@@ -5,12 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/constants/constants.dart';
+import '../../dashboard/blocs/dashboard_event.dart';
 import '../blocs/profile_bloc.dart';
 import '../../dashboard/blocs/dashboard_bloc.dart';
 import '../../../widgets/dualify_text_field.dart';
 import '../../../widgets/dualify_dropdown.dart';
 import '../../../widgets/dualify_date_picker.dart';
 import '../../../widgets/feedback_widgets.dart';
+import '../blocs/profile_event.dart';
+import '../blocs/profile_state.dart';
 
 /// Profile page for viewing and editing user information
 class ProfilePage extends StatefulWidget {

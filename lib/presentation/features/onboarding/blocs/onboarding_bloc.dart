@@ -1,201 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/utils/logger.dart';
 import '../../../../core/validation/form_validator.dart';
-import '../../../../domain/entities/entities.dart';
 import '../../../../domain/usecases/usecases.dart';
+import 'onboarding_event.dart';
+import 'onboarding_form_data.dart';
+import 'onboarding_state.dart';
 
-// Events
-abstract class OnboardingEvent extends Equatable {
-  const OnboardingEvent();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class OnboardingStarted extends OnboardingEvent {
-  const OnboardingStarted();
-}
-
-class OnboardingFieldChanged extends OnboardingEvent {
-  final String field;
-  final dynamic value;
-
-  const OnboardingFieldChanged({required this.field, required this.value});
-
-  @override
-  List<Object?> get props => [field, value];
-}
-
-class OnboardingSubmitted extends OnboardingEvent {
-  final OnboardingFormData formData;
-
-  const OnboardingSubmitted(this.formData);
-
-  @override
-  List<Object?> get props => [formData];
-}
-
-class OnboardingValidationRequested extends OnboardingEvent {
-  final OnboardingFormData formData;
-
-  const OnboardingValidationRequested(this.formData);
-
-  @override
-  List<Object?> get props => [formData];
-}
-
-// States
-abstract class OnboardingState extends Equatable {
-  const OnboardingState();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class OnboardingInitial extends OnboardingState {
-  const OnboardingInitial();
-}
-
-class OnboardingInProgress extends OnboardingState {
-  final OnboardingFormData formData;
-  final Map<String, String> fieldErrors;
-  final bool isValid;
-
-  const OnboardingInProgress({
-    required this.formData,
-    this.fieldErrors = const {},
-    this.isValid = false,
-  });
-
-  @override
-  List<Object?> get props => [formData, fieldErrors, isValid];
-
-  OnboardingInProgress copyWith({
-    OnboardingFormData? formData,
-    Map<String, String>? fieldErrors,
-    bool? isValid,
-  }) {
-    return OnboardingInProgress(
-      formData: formData ?? this.formData,
-      fieldErrors: fieldErrors ?? this.fieldErrors,
-      isValid: isValid ?? this.isValid,
-    );
-  }
-}
-
-class OnboardingSubmitting extends OnboardingState {
-  final OnboardingFormData formData;
-
-  const OnboardingSubmitting(this.formData);
-
-  @override
-  List<Object?> get props => [formData];
-}
-
-class OnboardingSuccess extends OnboardingState {
-  final ApprenticeProfile profile;
-
-  const OnboardingSuccess(this.profile);
-
-  @override
-  List<Object?> get props => [profile];
-}
-
-class OnboardingError extends OnboardingState {
-  final String message;
-  final String? code;
-  final OnboardingFormData? formData;
-  final bool isRecoverable;
-
-  const OnboardingError({
-    required this.message,
-    this.code,
-    this.formData,
-    this.isRecoverable = true,
-  });
-
-  @override
-  List<Object?> get props => [message, code, formData, isRecoverable];
-}
-
-// Form Data Model
-class OnboardingFormData extends Equatable {
-  final String firstName;
-  final String lastName;
-  final String trade;
-  final DateTime? apprenticeshipStartDate;
-  final DateTime? apprenticeshipEndDate;
-  final String? companyName;
-  final String? schoolName;
-  final String? email;
-  final String? phone;
-
-  const OnboardingFormData({
-    this.firstName = '',
-    this.lastName = '',
-    this.trade = '',
-    this.apprenticeshipStartDate,
-    this.apprenticeshipEndDate,
-    this.companyName,
-    this.schoolName,
-    this.email,
-    this.phone,
-  });
-
-  @override
-  List<Object?> get props => [
-    firstName,
-    lastName,
-    trade,
-    apprenticeshipStartDate,
-    apprenticeshipEndDate,
-    companyName,
-    schoolName,
-    email,
-    phone,
-  ];
-
-  OnboardingFormData copyWith({
-    String? firstName,
-    String? lastName,
-    String? trade,
-    DateTime? apprenticeshipStartDate,
-    DateTime? apprenticeshipEndDate,
-    String? companyName,
-    String? schoolName,
-    String? email,
-    String? phone,
-  }) {
-    return OnboardingFormData(
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      trade: trade ?? this.trade,
-      apprenticeshipStartDate:
-          apprenticeshipStartDate ?? this.apprenticeshipStartDate,
-      apprenticeshipEndDate:
-          apprenticeshipEndDate ?? this.apprenticeshipEndDate,
-      companyName: companyName ?? this.companyName,
-      schoolName: schoolName ?? this.schoolName,
-      email: email ?? this.email,
-      phone: phone ?? this.phone,
-    );
-  }
-
-  bool get isComplete {
-    return firstName.isNotEmpty &&
-        lastName.isNotEmpty &&
-        trade.isNotEmpty &&
-        apprenticeshipStartDate != null &&
-        apprenticeshipEndDate != null;
-  }
-}
-
-// BLoC
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   final CreateProfileUseCase _createProfileUseCase;
 
@@ -508,13 +322,13 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
 
   /// Determines if a failure is recoverable
   bool _isRecoverableFailure(Failure failure) {
-    switch (failure.runtimeType) {
-      case ValidationFailure _:
+    switch (failure) {
+      case ValidationFailure():
         return true; // User can correct validation errors
-      case DatabaseFailure:
-        final dbFailure = failure as DatabaseFailure;
+      case DatabaseFailure():
+        final dbFailure = failure;
         return dbFailure.code != 'DB_008'; // Data corruption is not recoverable
-      case NetworkFailure:
+      case NetworkFailure():
         return true; // Network issues are usually temporary
       default:
         return true; // Default to recoverable
@@ -562,19 +376,5 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       return currentState.message;
     }
     return null;
-  }
-}
-
-/// Predefined trade options matching the HTML design
-class TradeOptions {
-  static const List<String> trades = [
-    'Electrician',
-    'Plumber',
-    'Carpenter',
-    'Welder',
-  ];
-
-  static bool isValidTrade(String trade) {
-    return trades.contains(trade);
   }
 }

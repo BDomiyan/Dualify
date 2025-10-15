@@ -11,6 +11,9 @@ import '../../../widgets/dualify_text_field.dart';
 import '../../../widgets/dualify_dropdown.dart';
 import '../../../widgets/dualify_date_picker.dart';
 import '../../../widgets/feedback_widgets.dart';
+import '../blocs/onboarding_event.dart';
+import '../blocs/onboarding_form_data.dart';
+import '../blocs/onboarding_state.dart';
 
 /// Onboarding page matching the HTML design exactly
 class OnboardingPage extends StatefulWidget {

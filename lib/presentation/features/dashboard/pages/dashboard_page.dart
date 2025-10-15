@@ -6,6 +6,9 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_dimensions.dart';
 import '../../../../core/constants/constants.dart';
 import '../blocs/dashboard_bloc.dart';
+import '../blocs/dashboard_event.dart';
+import '../blocs/dashboard_state.dart';
+import '../blocs/dashboard_data.dart';
 import '../../../widgets/header_section.dart';
 import '../../../widgets/progress_section.dart';
 import '../../../widgets/verification_card.dart';
@@ -169,7 +172,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildLoadedState(DashboardData data) {
+  Widget _buildLoadedState(DashboardViewModel data) {
     final userName = data.profile?.firstName ?? AppConstants.defaultUserName;
     final dates = _generateLast7Days();
     final statusMap = _buildStatusMap(data.recentDailyLogs);
@@ -214,15 +217,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             AppConstants.opacity10,
                           ),
                           isVerified: true,
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  AppStrings.verificationComingSoon,
-                                ),
-                              ),
-                            );
-                          },
+                          onTap: () {},
                         ),
                         AppSpacing.verticalSpaceMD,
                         VerificationCard(
@@ -235,15 +230,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             AppConstants.opacity10,
                           ),
                           isVerified: true,
-                          onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  AppStrings.verificationComingSoon,
-                                ),
-                              ),
-                            );
-                          },
+                          onTap: () {},
                         ),
                       ],
                     ),
@@ -346,7 +333,11 @@ class _StatusSelectionSheet extends StatelessWidget {
           children: [
             Text(
               AppStrings.howWasYourDay,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: AppColors.slate600,
+              ),
             ),
             AppSpacing.verticalSpaceXXL,
             _StatusOption(

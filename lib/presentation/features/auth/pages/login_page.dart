@@ -10,6 +10,8 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_animations.dart';
 import '../../../../core/storage/shared_preferences_service.dart';
 import '../blocs/auth_bloc.dart';
+import '../blocs/auth_event.dart';
+import '../blocs/auth_state.dart';
 
 /// Login page with Google sign-in and decorative background
 class LoginPage extends StatefulWidget {
