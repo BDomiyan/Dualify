@@ -81,9 +81,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   }
 
   void _checkAuthStatus() {
-    // Wait for animations to complete before checking navigation
+    // Wait for splash screen display time before checking navigation
     Future.delayed(
-      const Duration(milliseconds: AppConstants.splashInitialDelay),
+      const Duration(seconds: AppConstants.splashDisplayDurationSeconds),
       () {
         if (mounted) {
           _determineInitialRoute();
@@ -111,121 +111,138 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primary,
-      body: Column(
-        children: [
-          const Spacer(flex: 2),
-
-          // Logo and title
-          AnimatedBuilder(
-            animation: _logoController,
-            builder: (context, child) {
-              return Transform.scale(
-                scale: _logoScaleAnimation.value,
-                child: Transform.rotate(
-                  angle: _logoRotationAnimation.value,
-                  child: Column(
-                    children: [
-                      // App icon/logo
-                      Container(
-                        width: AppConstants.splashLogoSize,
-                        height: AppConstants.splashLogoSize,
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: AppDimensions.radiusXXLBorder,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(
-                                AppConstants.opacity20,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo and title section
+              Expanded(
+                flex: AppConstants.splashLogoFlexRatio,
+                child: Center(
+                  child: AnimatedBuilder(
+                    animation: _logoController,
+                    builder: (context, child) {
+                      return Transform.scale(
+                        scale: _logoScaleAnimation.value,
+                        child: Transform.rotate(
+                          angle: _logoRotationAnimation.value,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // App icon/logo
+                              Container(
+                                width: AppConstants.splashLogoSize,
+                                height: AppConstants.splashLogoSize,
+                                decoration: BoxDecoration(
+                                  color: AppColors.white,
+                                  borderRadius: AppDimensions.radiusXXLBorder,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(
+                                        alpha: AppConstants.opacity20,
+                                      ),
+                                      blurRadius:
+                                          AppConstants.splashShadowBlurRadius,
+                                      spreadRadius:
+                                          AppConstants.splashShadowSpread,
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.school,
+                                  size: AppConstants.splashLogoIconSize,
+                                  color: AppColors.primary,
+                                ),
                               ),
-                              blurRadius: AppConstants.splashShadowBlurRadius,
-                              spreadRadius: AppConstants.splashShadowSpread,
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.school,
-                          size: AppConstants.splashLogoIconSize,
-                          color: AppColors.primary,
-                        ),
-                      ),
 
-                      AppSpacing.verticalSpaceXL,
+                              AppSpacing.verticalSpaceXL,
 
-                      // App title
-                      Text(
-                        AppStrings.appName,
-                        style: AppTextStyles.displayLarge.copyWith(
-                          color: AppColors.white,
-                          shadows: [
-                            Shadow(
-                              offset: const Offset(
-                                AppConstants.splashShadowOffsetX,
-                                AppConstants.splashShadowOffsetY,
+                              // App title
+                              Text(
+                                AppStrings.appName,
+                                style: AppTextStyles.displayLarge.copyWith(
+                                  color: AppColors.white,
+                                  shadows: [
+                                    Shadow(
+                                      offset: const Offset(
+                                        AppConstants.splashShadowOffsetX,
+                                        AppConstants.splashShadowOffsetY,
+                                      ),
+                                      blurRadius: AppConstants.splashShadowBlur,
+                                      color: Colors.black.withValues(
+                                        alpha: AppConstants.opacity30,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              blurRadius: AppConstants.splashShadowBlur,
-                              color: Colors.black.withOpacity(
-                                AppConstants.opacity30,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                ),
-              );
-            },
-          ),
-
-          const Spacer(),
-
-          // Loading indicator and subtitle
-          FadeTransition(
-            opacity: _fadeAnimation,
-            child: Column(
-              children: [
-                // Loading indicator
-                SizedBox(
-                  width: AppConstants.splashLoadingIndicatorSize,
-                  height: AppConstants.splashLoadingIndicatorSize,
-                  child: CircularProgressIndicator(
-                    strokeWidth: AppConstants.splashLoadingStrokeWidth,
-                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
-                  ),
-                ),
-
-                AppSpacing.verticalSpaceLG,
-
-                // Subtitle
-                Text(
-                  AppStrings.settingUpJourney,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.white.withOpacity(AppConstants.opacity90),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-
-          const Spacer(),
-
-          // Version info
-          FadeTransition(
-            opacity: _fadeAnimation,
-            child: Padding(
-              padding: AppSpacing.screen,
-              child: Text(
-                AppStrings.appVersion,
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.white.withOpacity(AppConstants.opacity70),
                 ),
               ),
-            ),
-          ),
 
-          AppSpacing.verticalSpaceLG,
-        ],
+              // Loading indicator and subtitle section
+              Expanded(
+                flex: AppConstants.splashLoadingFlexRatio,
+                child: Center(
+                  child: FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Loading indicator
+                        SizedBox(
+                          width: AppConstants.splashLoadingIndicatorSize,
+                          height: AppConstants.splashLoadingIndicatorSize,
+                          child: const CircularProgressIndicator(
+                            strokeWidth: AppConstants.splashLoadingStrokeWidth,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.white,
+                            ),
+                          ),
+                        ),
+
+                        AppSpacing.verticalSpaceLG,
+
+                        // Subtitle
+                        Text(
+                          AppStrings.settingUpJourney,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.white.withValues(
+                              alpha: AppConstants.opacity90,
+                            ),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              // Version info section
+              Padding(
+                padding: EdgeInsets.only(bottom: AppSpacing.lg),
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Text(
+                    AppStrings.appVersion,
+                    style: AppTextStyles.labelSmall.copyWith(
+                      color: AppColors.white.withValues(
+                        alpha: AppConstants.opacity70,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -271,9 +288,9 @@ class _MinimalSplashPageState extends State<MinimalSplashPage>
 
     _controller.forward();
 
-    // Navigate after delay
+    // Navigate after splash display duration
     Future.delayed(
-      const Duration(milliseconds: AppConstants.navigationDelay),
+      const Duration(seconds: AppConstants.splashDisplayDurationSeconds),
       () {
         if (mounted) {
           Navigator.of(context).pushReplacementNamed('/login');
@@ -292,27 +309,29 @@ class _MinimalSplashPageState extends State<MinimalSplashPage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primary,
-      body: FadeTransition(
-        opacity: _fadeAnimation,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.school,
-                size: AppConstants.iconSize64 + AppConstants.iconSize20,
-                color: AppColors.white,
-              ),
-
-              AppSpacing.verticalSpaceLG,
-
-              Text(
-                AppStrings.appName,
-                style: AppTextStyles.displayLarge.copyWith(
+      body: SafeArea(
+        child: FadeTransition(
+          opacity: _fadeAnimation,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.school,
+                  size: AppConstants.iconSize64 + AppConstants.iconSize20,
                   color: AppColors.white,
                 ),
-              ),
-            ],
+
+                AppSpacing.verticalSpaceLG,
+
+                Text(
+                  AppStrings.appName,
+                  style: AppTextStyles.displayLarge.copyWith(
+                    color: AppColors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

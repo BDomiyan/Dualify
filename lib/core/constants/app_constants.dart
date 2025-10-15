@@ -212,6 +212,9 @@ class AppConstants {
   static const double splashShadowOffsetX = 2.0;
   static const double splashShadowOffsetY = 2.0;
   static const double splashShadowBlur = 4.0;
+  static const int splashLogoFlexRatio = 3;
+  static const int splashLoadingFlexRatio = 2;
+  static const int splashDisplayDurationSeconds = 3;
 
   // ============================================================================
   // MAIN NAVIGATION
