@@ -7,7 +7,6 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/theme/app_dimensions.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_animations.dart';
-import '../../../widgets/bottom_nav_bar.dart';
 
 /// AI Assistant placeholder screen
 class AiAssistantPage extends StatefulWidget {

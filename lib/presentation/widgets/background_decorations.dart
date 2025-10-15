@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 import '../../core/theme/app_colors.dart';
-import '../../core/theme/app_dimensions.dart';
-import '../../core/theme/app_animations.dart';
 
 /// Decorative background icons for the login screen
 /// Shows scattered Material Icons with educational/apprenticeship theme
@@ -81,7 +79,9 @@ class _LoginBackgroundIconsState extends State<LoginBackgroundIcons>
         position: Offset(random.nextDouble(), random.nextDouble()),
         size: _minIconSize + random.nextDouble() * _maxIconSizeRange,
         rotation: random.nextDouble() * 2 * math.pi,
-        animationDelay: Duration(milliseconds: random.nextInt(_maxAnimationDelay)),
+        animationDelay: Duration(
+          milliseconds: random.nextInt(_maxAnimationDelay),
+        ),
       );
     });
   }
@@ -100,7 +100,9 @@ class _LoginBackgroundIconsState extends State<LoginBackgroundIcons>
     for (int i = 0; i < _icons.length; i++) {
       final controller = AnimationController(
         duration: Duration(
-          milliseconds: _baseAnimationDuration + math.Random(i).nextInt(_animationDurationRange),
+          milliseconds:
+              _baseAnimationDuration +
+              math.Random(i).nextInt(_animationDurationRange),
         ),
         vsync: this,
       );
@@ -330,7 +332,11 @@ class _PatternPainter extends CustomPainter {
 
     // Draw diagonal lines
     paint.strokeWidth = _diagonalStrokeWidth;
-    for (double x = -size.height; x < size.width; x += _gridSpacing * _diagonalSpacingMultiplier) {
+    for (
+      double x = -size.height;
+      x < size.width;
+      x += _gridSpacing * _diagonalSpacingMultiplier
+    ) {
       canvas.drawLine(
         Offset(x, 0),
         Offset(x + size.height, size.height),
