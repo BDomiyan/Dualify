@@ -1,13 +1,11 @@
+import '../../../../core/constants/app_strings.dart';
+
 /// Predefined trade options matching the HTML design
+/// This class now references the centralized AppStrings.tradeOptions
 class TradeOptions {
-  static const List<String> trades = [
-    'Electrician',
-    'Plumber',
-    'Carpenter',
-    'Welder',
-  ];
+  static List<String> get trades => AppStrings.tradeOptions;
 
   static bool isValidTrade(String trade) {
-    return trades.contains(trade);
+    return AppStrings.tradeOptions.contains(trade);
   }
 }

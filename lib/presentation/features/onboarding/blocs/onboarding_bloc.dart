@@ -159,19 +159,76 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       AppLogger.info(
         'Submitting onboarding form: ${event.formData.firstName} ${event.formData.lastName}',
       );
-      emit(OnboardingSubmitting(event.formData));
 
       // Validate form before submission
-      add(OnboardingValidationRequested(event.formData));
+      final fieldErrors = <String, String>{};
 
-      // Wait for validation to complete
-      await Future.delayed(const Duration(milliseconds: 100));
+      // Validate all required fields
+      final firstNameError = _validateField(
+        'firstName',
+        event.formData.firstName,
+      );
+      if (firstNameError != null) fieldErrors['firstName'] = firstNameError;
 
-      final currentState = state;
-      if (currentState is OnboardingInProgress && !currentState.isValid) {
-        AppLogger.warning('Form validation failed during submission');
+      final lastNameError = _validateField('lastName', event.formData.lastName);
+      if (lastNameError != null) fieldErrors['lastName'] = lastNameError;
+
+      final tradeError = _validateField('trade', event.formData.trade);
+      if (tradeError != null) fieldErrors['trade'] = tradeError;
+
+      final startDateError = _validateField(
+        'apprenticeshipStartDate',
+        event.formData.apprenticeshipStartDate,
+      );
+      if (startDateError != null) {
+        fieldErrors['apprenticeshipStartDate'] = startDateError;
+      }
+
+      final endDateError = _validateField(
+        'apprenticeshipEndDate',
+        event.formData.apprenticeshipEndDate,
+      );
+      if (endDateError != null) {
+        fieldErrors['apprenticeshipEndDate'] = endDateError;
+      }
+
+      // Validate date range
+      if (event.formData.apprenticeshipStartDate != null &&
+          event.formData.apprenticeshipEndDate != null) {
+        if (event.formData.apprenticeshipEndDate!.isBefore(
+          event.formData.apprenticeshipStartDate!,
+        )) {
+          fieldErrors['apprenticeshipEndDate'] =
+              'End date must be after start date';
+        }
+      }
+
+      // Check if form is valid
+      final isValid = _isFormValid(event.formData, fieldErrors);
+
+      if (!isValid) {
+        AppLogger.warning(
+          'Form validation failed during submission. Errors: $fieldErrors, '
+          'FormData: firstName="${event.formData.firstName}", '
+          'lastName="${event.formData.lastName}", '
+          'trade="${event.formData.trade}", '
+          'startDate=${event.formData.apprenticeshipStartDate}, '
+          'endDate=${event.formData.apprenticeshipEndDate}',
+        );
+        emit(
+          OnboardingInProgress(
+            formData: event.formData,
+            fieldErrors: fieldErrors,
+            isValid: false,
+          ),
+        );
         return;
       }
+
+      AppLogger.debug(
+        'Form validation passed. Submitting profile with trade: "${event.formData.trade}"',
+      );
+      emit(OnboardingSubmitting(event.formData));
 
       // Create profile
       final params = CreateProfileParams(

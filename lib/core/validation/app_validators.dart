@@ -1,3 +1,4 @@
+import '../constants/app_strings.dart';
 import 'validation.dart';
 
 /// Application-specific form validators
@@ -272,24 +273,11 @@ class ValidationUtils {
 
   /// Validates trade selection
   static String? validateTrade(String? trade) {
-    const validTrades = [
-      'Electrician',
-      'Plumber',
-      'Carpenter',
-      'Mechanic',
-      'Welder',
-      'HVAC Technician',
-      'Mason',
-      'Painter',
-      'Roofer',
-      'Other',
-    ];
-
     if (trade == null || trade.isEmpty) {
       return 'Please select a trade';
     }
 
-    if (!validTrades.contains(trade)) {
+    if (!AppStrings.tradeOptions.contains(trade)) {
       return 'Please select a valid trade';
     }
 

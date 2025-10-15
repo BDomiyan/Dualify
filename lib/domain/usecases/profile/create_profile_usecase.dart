@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../core/constants/app_strings.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/validation/validation.dart';
 import '../../entities/entities.dart';
@@ -135,18 +136,7 @@ class CreateProfileUseCase
         ])
         .addRequiredField(
           'trade',
-          ValidationRules.selection('Trade', [
-            'Electrician',
-            'Plumber',
-            'Carpenter',
-            'Mechanic',
-            'Welder',
-            'HVAC Technician',
-            'Mason',
-            'Painter',
-            'Roofer',
-            'Other',
-          ]),
+          ValidationRules.selection('Trade', AppStrings.tradeOptions),
         )
         .addRequiredField(
           'apprenticeshipStartDate',
