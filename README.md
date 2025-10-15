@@ -249,9 +249,6 @@ dualify_dashboard/
 │       ├── navigation/          # Navigation logic
 │       └── widgets/             # Shared widgets
 ├── test/                        # Unit and widget tests
-├── doc/                         # Documentation
-│   ├── DESIGN_CHOICES_SUMMARY.md
-│   └── DESIGN_CHOICES_DOCUMENTATION.md
 └── pubspec.yaml                 # Dependencies
 ```
 
