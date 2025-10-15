@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../core/constants/domain_constants.dart';
+
 /// Core domain entity representing a daily log entry
 /// Immutable entity following Domain-Driven Design principles
 class DailyLog extends Equatable {
@@ -68,39 +70,25 @@ class DailyLog extends Equatable {
 
   /// Gets the display text for the date
   String get dateDisplayText {
-    if (isToday) return 'Today';
+    if (isToday) return DomainConstants.displayToday;
 
     final now = DateTime.now();
     final yesterday = DateTime(now.year, now.month, now.day - 1);
-    if (dateOnly.isAtSameMomentAs(yesterday)) return 'Yesterday';
+    if (dateOnly.isAtSameMomentAs(yesterday))
+      return DomainConstants.displayYesterday;
 
     final tomorrow = DateTime(now.year, now.month, now.day + 1);
-    if (dateOnly.isAtSameMomentAs(tomorrow)) return 'Tomorrow';
+    if (dateOnly.isAtSameMomentAs(tomorrow))
+      return DomainConstants.displayTomorrow;
 
     // Format as "Mon 15" or "Tue 16"
-    const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    final weekday = weekdays[date.weekday - 1];
+    final weekday = DomainConstants.weekdayAbbreviations[date.weekday - 1];
     return '$weekday ${date.day}';
   }
 
   /// Gets the full date display text
   String get fullDateDisplayText {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-
-    final month = months[date.month - 1];
+    final month = DomainConstants.monthNames[date.month - 1];
     return '$month ${date.day}, ${date.year}';
   }
 
@@ -109,24 +97,29 @@ class DailyLog extends Equatable {
     final errors = <String>[];
 
     if (profileId.trim().isEmpty) {
-      errors.add('Profile ID is required');
+      errors.add(DomainConstants.errorProfileIdRequired);
     }
 
     // Validate that the date is not too far in the future
-    final maxFutureDate = DateTime.now().add(const Duration(days: 7));
+    final maxFutureDate = DateTime.now().add(
+      Duration(days: DomainConstants.maxDailyLogFutureDays),
+    );
     if (date.isAfter(maxFutureDate)) {
-      errors.add('Date cannot be more than 7 days in the future');
+      errors.add(DomainConstants.errorDateTooFarFuture);
     }
 
     // Validate that the date is not too far in the past
-    final minPastDate = DateTime.now().subtract(const Duration(days: 365 * 2));
+    final minPastDate = DateTime.now().subtract(
+      Duration(days: 365 * DomainConstants.maxDailyLogPastYears),
+    );
     if (date.isBefore(minPastDate)) {
-      errors.add('Date cannot be more than 2 years in the past');
+      errors.add(DomainConstants.errorDateTooFarPast);
     }
 
     // Validate notes length if provided
-    if (notes != null && notes!.length > 500) {
-      errors.add('Notes cannot exceed 500 characters');
+    if (notes != null &&
+        notes!.length > DomainConstants.maxDailyLogNotesLength) {
+      errors.add(DomainConstants.errorNotesTooLong);
     }
 
     return errors;
@@ -151,27 +144,32 @@ class DailyLog extends Equatable {
       'DailyLog(id: $id, date: $dateDisplayText, status: ${status.displayName})';
 }
 
-/// Enumeration for daily log status with emoji and color information
+/// Enumeration for daily log status
 enum DailyLogStatus {
-  learning('learning', '📚', 'Learning', 'Had a great learning day'),
-  challenging(
-    'challenging',
-    '💪',
-    'Challenging',
-    'Faced some challenges but pushed through',
+  learning(
+    DomainConstants.dailyLogStatusLearning,
+    DomainConstants.dailyLogStatusLearningDisplay,
+    DomainConstants.dailyLogStatusLearningDescription,
   ),
-  neutral('neutral', '😐', 'Neutral', 'A regular day at work'),
-  good('good', '😊', 'Good', 'Had a good productive day');
-
-  const DailyLogStatus(
-    this.value,
-    this.emoji,
-    this.displayName,
-    this.description,
+  challenging(
+    DomainConstants.dailyLogStatusChallenging,
+    DomainConstants.dailyLogStatusChallengingDisplay,
+    DomainConstants.dailyLogStatusChallengingDescription,
+  ),
+  neutral(
+    DomainConstants.dailyLogStatusNeutral,
+    DomainConstants.dailyLogStatusNeutralDisplay,
+    DomainConstants.dailyLogStatusNeutralDescription,
+  ),
+  good(
+    DomainConstants.dailyLogStatusGood,
+    DomainConstants.dailyLogStatusGoodDisplay,
+    DomainConstants.dailyLogStatusGoodDescription,
   );
 
+  const DailyLogStatus(this.value, this.displayName, this.description);
+
   final String value;
-  final String emoji;
   final String displayName;
   final String description;
 
@@ -185,20 +183,6 @@ enum DailyLogStatus {
 
   /// Gets all available statuses for selection
   static List<DailyLogStatus> get allStatuses => DailyLogStatus.values;
-
-  /// Gets the color associated with this status
-  String get colorHex {
-    switch (this) {
-      case DailyLogStatus.learning:
-        return '#87CEEB'; // Sky blue
-      case DailyLogStatus.challenging:
-        return '#FFD700'; // Gold
-      case DailyLogStatus.neutral:
-        return '#D3D3D3'; // Light gray
-      case DailyLogStatus.good:
-        return '#90EE90'; // Light green
-    }
-  }
 }
 
 /// Factory class for creating DailyLog instances
@@ -264,7 +248,7 @@ class DailyLogFactory {
   static String _generateId() {
     final timestamp = DateTime.now().millisecondsSinceEpoch;
     final random = DateTime.now().microsecond;
-    return 'daily_log_${timestamp}_$random';
+    return '${DomainConstants.dailyLogIdPrefix}${timestamp}${DomainConstants.idSeparator}$random';
   }
 }
 
@@ -275,8 +259,10 @@ class DailyLogUtils {
     final center = centerDate ?? DateTime.now();
     final centerDateOnly = DateTime(center.year, center.month, center.day);
 
-    return List.generate(7, (index) {
-      return centerDateOnly.subtract(Duration(days: 6 - index));
+    return List.generate(DomainConstants.dailyLogDisplayDays, (index) {
+      return centerDateOnly.subtract(
+        Duration(days: DomainConstants.dailyLogDateOffset - index),
+      );
     });
   }
 
@@ -288,7 +274,7 @@ class DailyLogUtils {
     // Calculate Monday of the week
     final monday = dateOnly.subtract(Duration(days: weekday - 1));
 
-    return List.generate(7, (index) {
+    return List.generate(DomainConstants.daysInWeek, (index) {
       return monday.add(Duration(days: index));
     });
   }

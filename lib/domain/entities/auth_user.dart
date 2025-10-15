@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../core/constants/domain_constants.dart';
+
 /// Core domain entity representing an authenticated user
 /// Immutable entity following Domain-Driven Design principles
 class AuthUser extends Equatable {
@@ -57,21 +59,23 @@ class AuthUser extends Equatable {
   /// Gets the first name from display name
   String? get firstName {
     if (displayName == null || displayName!.isEmpty) return null;
-    final parts = displayName!.split(' ');
+    final parts = displayName!.split(DomainConstants.spaceCharacter);
     return parts.isNotEmpty ? parts.first : null;
   }
 
   /// Gets the last name from display name
   String? get lastName {
     if (displayName == null || displayName!.isEmpty) return null;
-    final parts = displayName!.split(' ');
-    return parts.length > 1 ? parts.skip(1).join(' ') : null;
+    final parts = displayName!.split(DomainConstants.spaceCharacter);
+    return parts.length > 1
+        ? parts.skip(1).join(DomainConstants.spaceCharacter)
+        : null;
   }
 
   /// Gets initials for avatar display
   String get initials {
     if (displayName?.isNotEmpty == true) {
-      final parts = displayName!.split(' ');
+      final parts = displayName!.split(DomainConstants.spaceCharacter);
       if (parts.length >= 2) {
         return '${parts.first[0]}${parts[1][0]}'.toUpperCase();
       } else if (parts.isNotEmpty) {
@@ -80,7 +84,9 @@ class AuthUser extends Equatable {
     }
 
     // Fall back to email
-    return email.isNotEmpty ? email[0].toUpperCase() : '?';
+    return email.isNotEmpty
+        ? email[0].toUpperCase()
+        : DomainConstants.fallbackInitial;
   }
 
   /// Checks if the user has a profile photo
@@ -90,7 +96,8 @@ class AuthUser extends Equatable {
   Duration get timeSinceLastSignIn => DateTime.now().difference(lastSignInAt);
 
   /// Checks if the user signed in recently (within last hour)
-  bool get signedInRecently => timeSinceLastSignIn.inHours < 1;
+  bool get signedInRecently =>
+      timeSinceLastSignIn.inHours < DomainConstants.recentSignInWindowHours;
 
   /// Gets metadata value by key
   T? getMetadata<T>(String key) {
@@ -117,30 +124,29 @@ class AuthUser extends Equatable {
     final errors = <String>[];
 
     if (id.trim().isEmpty) {
-      errors.add('User ID is required');
+      errors.add(DomainConstants.errorUserIdRequired);
     }
 
     if (email.trim().isEmpty) {
-      errors.add('Email is required');
+      errors.add(DomainConstants.errorEmailRequired);
     } else {
       // Basic email validation
-      final emailRegex = RegExp(
-        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-      );
+      final emailRegex = RegExp(DomainConstants.emailRegexPattern);
       if (!emailRegex.hasMatch(email)) {
-        errors.add('Invalid email format');
+        errors.add(DomainConstants.errorInvalidEmail);
       }
     }
 
-    if (displayName != null && displayName!.length > 100) {
-      errors.add('Display name cannot exceed 100 characters');
+    if (displayName != null &&
+        displayName!.length > DomainConstants.maxDisplayNameLength) {
+      errors.add(DomainConstants.errorDisplayNameTooLong);
     }
 
     if (photoUrl != null && photoUrl!.isNotEmpty) {
       try {
         Uri.parse(photoUrl!);
       } catch (e) {
-        errors.add('Invalid photo URL format');
+        errors.add(DomainConstants.errorInvalidPhotoUrl);
       }
     }
 
@@ -170,17 +176,31 @@ class AuthUser extends Equatable {
 
 /// Enumeration for authentication providers
 enum AuthProvider {
-  google('google', 'Google', '🔍'),
-  apple('apple', 'Apple', '🍎'),
-  email('email', 'Email', '📧'),
-  anonymous('anonymous', 'Anonymous', '👤'),
-  mock('mock', 'Mock', '🧪'); // For testing/development
+  google(
+    DomainConstants.authProviderGoogle,
+    DomainConstants.authProviderGoogleDisplay,
+  ),
+  apple(
+    DomainConstants.authProviderApple,
+    DomainConstants.authProviderAppleDisplay,
+  ),
+  email(
+    DomainConstants.authProviderEmail,
+    DomainConstants.authProviderEmailDisplay,
+  ),
+  anonymous(
+    DomainConstants.authProviderAnonymous,
+    DomainConstants.authProviderAnonymousDisplay,
+  ),
+  mock(
+    DomainConstants.authProviderMock,
+    DomainConstants.authProviderMockDisplay,
+  ); // For testing/development
 
-  const AuthProvider(this.value, this.displayName, this.icon);
+  const AuthProvider(this.value, this.displayName);
 
   final String value;
   final String displayName;
-  final String icon;
 
   /// Gets provider from string value
   static AuthProvider fromValue(String value) {
@@ -193,9 +213,6 @@ enum AuthProvider {
   /// Gets all available providers
   static List<AuthProvider> get allProviders => AuthProvider.values;
 
-  /// Gets the display text with icon
-  String get displayTextWithIcon => '$icon $displayName';
-
   /// Checks if this is a social provider
   bool get isSocialProvider =>
       this == AuthProvider.google || this == AuthProvider.apple;
@@ -207,10 +224,22 @@ enum AuthProvider {
 
 /// Authentication status enumeration
 enum AuthStatus {
-  authenticated('authenticated', 'Authenticated'),
-  unauthenticated('unauthenticated', 'Unauthenticated'),
-  loading('loading', 'Loading'),
-  error('error', 'Error');
+  authenticated(
+    DomainConstants.authStatusAuthenticated,
+    DomainConstants.authStatusAuthenticatedDisplay,
+  ),
+  unauthenticated(
+    DomainConstants.authStatusUnauthenticated,
+    DomainConstants.authStatusUnauthenticatedDisplay,
+  ),
+  loading(
+    DomainConstants.authStatusLoading,
+    DomainConstants.authStatusLoadingDisplay,
+  ),
+  error(
+    DomainConstants.authStatusError,
+    DomainConstants.authStatusErrorDisplay,
+  );
 
   const AuthStatus(this.value, this.displayName);
 
@@ -285,9 +314,11 @@ class AuthUserFactory {
     String? displayName,
   }) {
     final now = DateTime.now();
-    final mockId = id ?? 'mock_user_${now.millisecondsSinceEpoch}';
-    final mockEmail = email ?? 'test@example.com';
-    final mockDisplayName = displayName ?? 'Test User';
+    final mockId =
+        id ??
+        '${DomainConstants.mockUserIdPrefix}${now.millisecondsSinceEpoch}';
+    final mockEmail = email ?? DomainConstants.mockUserEmail;
+    final mockDisplayName = displayName ?? DomainConstants.mockUserDisplayName;
 
     return AuthUser(
       id: mockId,
@@ -297,7 +328,10 @@ class AuthUserFactory {
       isEmailVerified: true,
       createdAt: now,
       lastSignInAt: now,
-      metadata: {'isMockUser': true, 'createdForTesting': true},
+      metadata: {
+        DomainConstants.metadataIsMockUser: true,
+        DomainConstants.metadataCreatedForTesting: true,
+      },
     );
   }
 
@@ -357,7 +391,7 @@ class UserSession extends Equatable {
   /// Checks if the session is expired (inactive for more than 24 hours)
   bool get isExpired {
     if (!isActive) return true;
-    return sessionDuration.inHours > 24;
+    return sessionDuration.inHours > DomainConstants.maxSessionDurationHours;
   }
 
   /// Creates a copy with the session ended

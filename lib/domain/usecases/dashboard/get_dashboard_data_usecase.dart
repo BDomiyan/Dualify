@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/errors/failures.dart';
+import '../../../core/services/question_of_the_day_service.dart';
 import '../../entities/entities.dart';
 import '../../repositories/repositories.dart';
 import '../usecase.dart';
@@ -61,8 +62,10 @@ class DashboardData {
 /// Follows Clean Architecture and Single Responsibility Principle
 class GetDashboardDataUseCase implements UseCase<DashboardData, NoParams> {
   final ILocalApprenticeshipRepository _repository;
+  final QuestionOfTheDayService _questionService;
 
-  const GetDashboardDataUseCase(this._repository);
+  GetDashboardDataUseCase(this._repository)
+    : _questionService = QuestionOfTheDayService();
 
   @override
   Future<Either<Failure, DashboardData>> call(NoParams params) async {
@@ -192,16 +195,16 @@ class GetDashboardDataUseCase implements UseCase<DashboardData, NoParams> {
   /// This is a helper method that doesn't fail the entire dashboard if it fails
   Future<Either<Failure, QuestionOfTheDay?>> _getTodaysQuestion() async {
     try {
-      // For now, we'll generate a deterministic question based on today's date
-      // In a real implementation, this might come from a service or be pre-generated
+      // Generate a deterministic question based on today's date
       final today = DateTime.now();
       final categories = QuestionCategory.values;
       final categoryIndex = today.day % categories.length;
       final category = categories[categoryIndex];
 
-      final questionText = PredefinedQuestions.getDeterministicQuestion(
+      // Load question from service
+      final questionData = await _questionService.getDeterministicQuestion(
         today,
-        category,
+        category: category,
       );
 
       // Create a question ID based on today's date
@@ -217,7 +220,7 @@ class GetDashboardDataUseCase implements UseCase<DashboardData, NoParams> {
           // If getting existing response fails, create a new question without response
           final question = QuestionOfTheDayFactory.fromData(
             id: questionId,
-            question: questionText,
+            question: questionData.question,
             category: category,
             createdAt: DateTime(today.year, today.month, today.day),
           );
@@ -231,7 +234,7 @@ class GetDashboardDataUseCase implements UseCase<DashboardData, NoParams> {
             // Create new question for today
             final question = QuestionOfTheDayFactory.fromData(
               id: questionId,
-              question: questionText,
+              question: questionData.question,
               category: category,
               createdAt: DateTime(today.year, today.month, today.day),
             );

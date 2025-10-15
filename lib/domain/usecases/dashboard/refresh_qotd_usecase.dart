@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../core/errors/failures.dart';
+import '../../../core/services/question_of_the_day_service.dart';
 import '../../../core/validation/validation.dart';
 import '../../entities/entities.dart';
 import '../../repositories/repositories.dart';
@@ -32,9 +33,12 @@ class QotdRefreshResult {
 class RefreshQotdUseCase
     implements UseCase<QotdRefreshResult, RefreshQotdParams> {
   final ILocalApprenticeshipRepository _repository;
+  final QuestionOfTheDayService _questionService;
   final FormValidator _validator;
 
-  RefreshQotdUseCase(this._repository) : _validator = _createValidator();
+  RefreshQotdUseCase(this._repository)
+    : _questionService = QuestionOfTheDayService(),
+      _validator = _createValidator();
 
   @override
   Future<Either<Failure, QotdRefreshResult>> call(
@@ -171,7 +175,7 @@ class RefreshQotdUseCase
       }
 
       // Generate new question for today
-      return _generateTodaysQuestion(questionId, today);
+      return await _generateTodaysQuestion(questionId, today);
     } catch (e) {
       return Left(
         DataFailure(
@@ -183,24 +187,25 @@ class RefreshQotdUseCase
   }
 
   /// Generates a new question for today
-  Either<Failure, QuestionOfTheDay> _generateTodaysQuestion(
+  Future<Either<Failure, QuestionOfTheDay>> _generateTodaysQuestion(
     String questionId,
     DateTime today,
-  ) {
+  ) async {
     try {
       // Use deterministic algorithm to select category and question
       final categories = QuestionCategory.values;
       final categoryIndex = today.day % categories.length;
       final category = categories[categoryIndex];
 
-      final questionText = PredefinedQuestions.getDeterministicQuestion(
+      // Load question from service
+      final questionData = await _questionService.getDeterministicQuestion(
         today,
-        category,
+        category: category,
       );
 
       final question = QuestionOfTheDayFactory.fromData(
         id: questionId,
-        question: questionText,
+        question: questionData.question,
         category: category,
         createdAt: DateTime(today.year, today.month, today.day),
       );
@@ -237,9 +242,10 @@ class RefreshQotdUseCase
       final categoryIndex = now.millisecond % categories.length;
       final category = categories[categoryIndex];
 
-      // Get a random question from the category
-      final questionText = PredefinedQuestions.getRandomQuestionFromCategory(
-        category,
+      // Get a random question from the service
+      final questionData = await _questionService.getRandomQuestion(
+        category: category,
+        seed: now.millisecondsSinceEpoch,
       );
 
       // Generate unique ID
@@ -247,7 +253,7 @@ class RefreshQotdUseCase
 
       final question = QuestionOfTheDayFactory.fromData(
         id: questionId,
-        question: questionText,
+        question: questionData.question,
         category: category,
         createdAt: now,
       );

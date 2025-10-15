@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../core/constants/domain_constants.dart';
+
 /// Core domain entity representing an apprentice's profile
 /// Immutable entity following Domain-Driven Design principles
 class ApprenticeProfile extends Equatable {
@@ -77,11 +79,15 @@ class ApprenticeProfile extends Equatable {
 
   /// Gets the display name for the company (or "Not specified")
   String get companyDisplayName =>
-      companyName?.isNotEmpty == true ? companyName! : 'Not specified';
+      companyName?.isNotEmpty == true
+          ? companyName!
+          : DomainConstants.notSpecifiedLabel;
 
   /// Gets the display name for the school (or "Not specified")
   String get schoolDisplayName =>
-      schoolName?.isNotEmpty == true ? schoolName! : 'Not specified';
+      schoolName?.isNotEmpty == true
+          ? schoolName!
+          : DomainConstants.notSpecifiedLabel;
 
   /// Calculates the total duration of the apprenticeship in days
   int get apprenticeshipDurationDays =>
@@ -89,11 +95,11 @@ class ApprenticeProfile extends Equatable {
 
   /// Calculates the total duration of the apprenticeship in months (approximate)
   int get apprenticeshipDurationMonths =>
-      (apprenticeshipDurationDays / 30.44).round(); // Average days per month
+      (apprenticeshipDurationDays / DomainConstants.daysPerMonth).round();
 
   /// Calculates the total duration of the apprenticeship in years (approximate)
   double get apprenticeshipDurationYears =>
-      apprenticeshipDurationDays / 365.25; // Account for leap years
+      apprenticeshipDurationDays / DomainConstants.daysPerYear;
 
   /// Calculates days elapsed since apprenticeship start
   int get daysElapsed {
@@ -140,42 +146,44 @@ class ApprenticeProfile extends Equatable {
     final errors = <String>[];
 
     if (firstName.trim().isEmpty) {
-      errors.add('First name is required');
+      errors.add(DomainConstants.errorFirstNameRequired);
     }
 
     if (lastName.trim().isEmpty) {
-      errors.add('Last name is required');
+      errors.add(DomainConstants.errorLastNameRequired);
     }
 
     if (trade.trim().isEmpty) {
-      errors.add('Trade is required');
+      errors.add(DomainConstants.errorTradeRequired);
     }
 
     if (apprenticeshipEndDate.isBefore(apprenticeshipStartDate)) {
-      errors.add('Apprenticeship end date must be after start date');
+      errors.add(DomainConstants.errorInvalidDateRange);
     }
 
     // Validate minimum duration (6 months)
-    final minDuration = const Duration(days: 180);
+    final minDuration = const Duration(
+      days: DomainConstants.minApprenticeDurationDays,
+    );
     if (apprenticeshipEndDate.difference(apprenticeshipStartDate) <
         minDuration) {
-      errors.add('Apprenticeship must be at least 6 months long');
+      errors.add(DomainConstants.errorDurationTooShort);
     }
 
     // Validate maximum duration (8 years)
-    final maxDuration = const Duration(days: 365 * 8);
+    final maxDuration = const Duration(
+      days: DomainConstants.maxApprenticeDurationDays,
+    );
     if (apprenticeshipEndDate.difference(apprenticeshipStartDate) >
         maxDuration) {
-      errors.add('Apprenticeship cannot exceed 8 years');
+      errors.add(DomainConstants.errorDurationTooLong);
     }
 
     // Validate email format if provided
     if (email != null && email!.isNotEmpty) {
-      final emailRegex = RegExp(
-        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-      );
+      final emailRegex = RegExp(DomainConstants.emailRegexPattern);
       if (!emailRegex.hasMatch(email!)) {
-        errors.add('Invalid email format');
+        errors.add(DomainConstants.errorInvalidEmail);
       }
     }
 
@@ -210,9 +218,9 @@ class ApprenticeProfile extends Equatable {
 
 /// Enumeration for apprenticeship status
 enum ApprenticeshipStatus {
-  notStarted('Not Started'),
-  active('Active'),
-  completed('Completed');
+  notStarted(DomainConstants.apprenticeshipStatusNotStartedDisplay),
+  active(DomainConstants.apprenticeshipStatusActiveDisplay),
+  completed(DomainConstants.apprenticeshipStatusCompletedDisplay);
 
   const ApprenticeshipStatus(this.displayName);
   final String displayName;
@@ -290,6 +298,6 @@ class ApprenticeProfileFactory {
   static String _generateId() {
     final timestamp = DateTime.now().millisecondsSinceEpoch;
     final random = DateTime.now().microsecond;
-    return 'profile_${timestamp}_$random';
+    return '${DomainConstants.profileIdPrefix}${timestamp}${DomainConstants.idSeparator}$random';
   }
 }
